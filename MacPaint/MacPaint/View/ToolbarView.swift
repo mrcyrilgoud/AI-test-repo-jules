@@ -15,7 +15,7 @@ struct ToolbarView: View {
                 Image(systemName: "eraser")
             }
             Button(action: { viewModel.selectedTool = .paintbucket }) {
-                Image(systemName: "paintbucket")
+                Image(systemName: "eyedropper")
             }
             Button(action: { viewModel.selectedTool = .line }) {
                 Image(systemName: "line.diagonal")
@@ -31,8 +31,7 @@ struct ToolbarView: View {
             }
 
             Button(action: {
-                let canvas = DrawingCanvas(viewModel: viewModel)
-                viewModel.exportImage(view: canvas)
+                viewModel.exportImage()
             }) {
                 Image(systemName: "square.and.arrow.up")
             }

@@ -7,23 +7,69 @@ class DrawingViewModel: ObservableObject {
     @Published var selectedTool: DrawingTool = .pencil
     @Published var selectedLineWidth: CGFloat = 1.0
     @Published var backgroundImage: NSImage?
+    @Published var canvasSize: CGSize = .zero
+    @Published var previewLine: Line?
+
+    private var isNewLine = true
+    private var lineStartPoint: CGPoint = .zero
 
     func addPoint(_ point: CGPoint) {
-        if lines.isEmpty || lines.last?.points.isEmpty == false {
-            startNewLine()
+        if selectedTool == .paintbucket {
+            return
         }
-        lines[lines.count - 1].points.append(point)
+
+        if isNewLine {
+            startNewLine(point: point)
+            isNewLine = false
+        }
+
+        if selectedTool == .line {
+            previewLine?.points = [lineStartPoint, point]
+        } else {
+            lines[lines.count - 1].points.append(point)
+        }
     }
 
-    func startNewLine() {
-        let newLine = Line(points: [], color: selectedColor, lineWidth: selectedLineWidth)
+    func startNewLine(point: CGPoint) {
+        var color = selectedColor
+        var lineWidth = selectedLineWidth
+
+        switch selectedTool {
+        case .pencil:
+            break
+        case .paintbrush:
+            lineWidth *= 5
+        case .eraser:
+            color = .white
+            lineWidth *= 10
+        case .line:
+            lineStartPoint = point
+        default:
+            break
+        }
+
+        let newLine = Line(points: [point], color: color, lineWidth: lineWidth, tool: selectedTool)
+
+        if selectedTool == .line {
+            previewLine = newLine
+        }
+
         lines.append(newLine)
     }
 
     func endLine() {
-        if lines.last?.points.count == 0 {
+        if selectedTool == .line {
+            if let previewLine = previewLine {
+                lines[lines.count - 1].points = previewLine.points
+            }
+            previewLine = nil
+        }
+
+        if let lastLine = lines.last, lastLine.points.count < 2 && selectedTool != .line {
             lines.removeLast()
         }
+
+        isNewLine = true
     }
 
     func importImage() {
@@ -36,8 +82,9 @@ class DrawingViewModel: ObservableObject {
         }
     }
 
-    func exportImage(view: some View) {
-        let image = view.renderAsImage()
+    func exportImage() {
+        let imageView = ExportImageView(lines: lines, backgroundImage: backgroundImage, canvasSize: canvasSize)
+        let image = imageView.renderAsImage()
 
         let savePanel = NSSavePanel()
         savePanel.allowedContentTypes = [.png]
@@ -62,4 +109,5 @@ struct Line {
     var points: [CGPoint]
     var color: Color
     var lineWidth: CGFloat
+    var tool: DrawingTool
 }
