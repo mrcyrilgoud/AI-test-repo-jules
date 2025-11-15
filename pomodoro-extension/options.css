@@ -1,0 +1,71 @@
+:root {
+    --bg-color: #ffffff;
+    --text-color: #202124;
+    --input-bg-color: #f1f3f4;
+    --input-text-color: #202124;
+    --button-bg-color: #1a73e8;
+    --button-text-color: #ffffff;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+    --bg-color: #202124;
+    --text-color: #e8eaed;
+    --input-bg-color: #3c4043;
+    --input-text-color: #e8eaed;
+    --button-bg-color: #8ab4f8;
+    --button-text-color: #202124;
+}
+
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--input-bg-color);
+    background-color: var(--input-bg-color);
+    color: var(--input-text-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button[type="submit"] {
+    background-color: var(--button-bg-color);
+    color: var(--button-text-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    opacity: 0.9;
+}
