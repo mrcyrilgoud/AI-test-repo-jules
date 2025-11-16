@@ -1,5 +1,8 @@
+import re
+
 import requests
 from bs4 import BeautifulSoup
+
 
 def scrape_ucla_cs():
     """
@@ -8,30 +11,38 @@ def scrape_ucla_cs():
     url = "https://grad.ucla.edu/requirements/?app=admission&major=0201"
     try:
         response = requests.get(url)
-        soup = BeautifulSoup(response.content, 'html.parser')
+        soup = BeautifulSoup(response.content, "html.parser")
 
-        # Scrape the data dynamically
-        deadline = soup.find(text="Deadlines to apply").find_next().text.strip()
-        gre_status = soup.find(text="Exams & GRE Types").find_next().text.replace("GRE:", "").strip()
-        recommendation_letters = soup.find(text="Letters of Recommendation").find_next().text.strip()
+        def get_value_for_label(label):
+            found_label = soup.find(text=re.compile(label, re.IGNORECASE))
+            if found_label:
+                return found_label.find_next().text.strip()
+            return "Not found"
+
+        deadline = get_value_for_label("Deadlines to apply")
+        gre_status = (
+            get_value_for_label("Exams & GRE Types").replace("GRE:", "").strip()
+        )
+        recommendation_letters = get_value_for_label("Letters of Recommendation")
 
         program_data = {
             "University": "UCLA",
             "Program": "Computer Science",
-            "Minimum GPA": "3.0", # University-wide minimum
+            "Minimum GPA": "3.0",  # University-wide minimum
             "GRE Required": gre_status,
-            "Required Coursework": "Computer Science background recommended", # From department page
+            "Required Coursework": "Computer Science background recommended",  # From department page
             "Letters of Recommendation": recommendation_letters,
-            "Faculty/Research Areas": "Artificial Intelligence, Computational Systems Biology, Computer Science Theory, Computer Systems Architecture, Data Science Computing, Graphics and Vision, Network Systems, Software Systems", # From department page
+            "Faculty/Research Areas": "Artificial Intelligence, Computational Systems Biology, Computer Science Theory, Computer Systems Architecture, Data Science Computing, Graphics and Vision, Network Systems, Software Systems",  # From department page
             "Application Deadline": deadline,
-            "Tuition": "$14,889", # From financial aid office
-            "Housing Cost": "$27,396" # From financial aid office
+            "Tuition": "$14,889",  # From financial aid office
+            "Housing Cost": "$27,396",  # From financial aid office
         }
 
         return program_data
     except Exception as e:
         print(f"An error occurred while scraping UCLA: {e}")
         return None
+
 
 def scrape_stanford_cs():
     """
@@ -47,9 +58,10 @@ def scrape_stanford_cs():
         "Faculty/Research Areas": "AI, Graphics, HCI, NLP, Robotics, Systems, Theory, etc.",
         "Application Deadline": "December 2, 2025",
         "Tuition": "$18,829 (per quarter)",
-        "Housing Cost": "$19,380 (academic year)"
+        "Housing Cost": "$19,380 (academic year)",
     }
     return program_data
+
 
 def scrape_program(university_name):
     """
@@ -62,7 +74,8 @@ def scrape_program(university_name):
     else:
         return None
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     data = scrape_program("stanford")
     if data:
         print(data)
