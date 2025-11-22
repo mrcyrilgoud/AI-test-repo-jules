@@ -1,21 +1,26 @@
-{% extends "base.html" %} {% block title %}Settings{% endblock %} {% block
-content %}
-<h1>Settings</h1>
-<p>Please enter your Google Drive credentials.</p>
-<div class="alert alert-warning" role="alert">
-    <strong>Warning:</strong> Pasting your credentials here is not secure. This
-    tool is for local use only. Do not use it on a public or shared computer.
-</div>
-<form action="/save_settings" method="post">
-    <div class="form-group">
-        <textarea
-            class="form-control"
-            name="credentials"
-            rows="10"
-            placeholder="Paste your credentials.json content here"
-        ></textarea>
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Settings</h1>
+    <p class="lead">Please enter your Google Drive credentials.</p>
+
+    <div class="alert alert-warning" role="alert">
+        <strong>Warning:</strong> Pasting your credentials here is not secure. This
+        tool is for local use only. Do not use it on a public or shared computer.
     </div>
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
-<a href="/">Back to Home</a>
+
+    <form action="/save_settings" method="post">
+        <div class="form-group">
+            <textarea class="form-control" name="credentials" rows="10"
+                placeholder="Paste your credentials.json content here" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Credentials</button>
+    </form>
+
+    <div style="margin-top: var(--spacing-md);">
+        <a href="/">Back to Home</a>
+    </div>
+</div>
 {% endblock %}

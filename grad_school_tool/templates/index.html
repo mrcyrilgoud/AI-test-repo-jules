@@ -1,21 +1,21 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
-%}
-<div class="jumbotron">
-    <h1 class="display-4">Grad School Program Analyzer</h1>
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Program Analyzer</h1>
     <p class="lead">
         Enter the universities you are interested in, one per line.
     </p>
-    <hr class="my-4" />
-    <form action="/submit" method="post">
+
+    <hr class="divider" />
+
+    <form action="/submit" method="post" onsubmit="this.querySelector('button').classList.add('loading')">
         <div class="form-group">
-            <textarea
-                class="form-control"
-                name="universities"
-                rows="10"
-                placeholder="e.g.&#10;UCLA&#10;Stanford"
-            ></textarea>
+            <textarea class="form-control" name="universities" rows="8" placeholder="e.g.&#10;UCLA&#10;Stanford"
+                required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Analyze</button>
+        <button type="submit" class="btn btn-primary">Analyze Programs</button>
     </form>
 </div>
 {% endblock %}
