@@ -15,7 +15,10 @@
             <textarea class="form-control" name="universities" rows="8" placeholder="e.g.&#10;UCLA&#10;Stanford"
                 required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Analyze Programs</button>
+        <div class="button-group" style="display: flex; gap: var(--spacing-sm); justify-content: center;">
+            <button type="submit" name="action" value="visualize" class="btn btn-primary">Visualize Only</button>
+            <button type="submit" name="action" value="save" class="btn btn-secondary">Save to Sheet</button>
+        </div>
     </form>
 </div>
 {% endblock %}

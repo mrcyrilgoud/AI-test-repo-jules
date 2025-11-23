@@ -36,20 +36,30 @@ def save_settings():
 @app.route("/submit", methods=["POST"])
 def submit():
     universities_input = request.form["universities"]
+    action = request.form.get("action", "visualize")
+    
     universities_list = [
         uni.strip() for uni in universities_input.splitlines() if uni.strip()
     ]
 
-    spreadsheet = get_spreadsheet("Grad School Programs")
-    if spreadsheet:
-        worksheet = spreadsheet.sheet1
-        for university in universities_list:
-            scraped_data = scrape_program(university)
-            if scraped_data:
-                worksheet.append_row(list(scraped_data.values()))
-        return f"Successfully created and updated spreadsheet: <a href='{spreadsheet.url}' target='_blank'>{spreadsheet.title}</a>"
-    else:
-        return "Failed to create spreadsheet. Please make sure your Google Drive credentials are set correctly in the <a href='/settings'>settings page</a>."
+    scraped_results = []
+    for university in universities_list:
+        data = scrape_program(university)
+        if data:
+            scraped_results.append(data)
+
+    if action == "visualize":
+        return render_template("results.html", results=scraped_results)
+    
+    elif action == "save":
+        spreadsheet = get_spreadsheet("Grad School Programs")
+        if spreadsheet:
+            worksheet = spreadsheet.sheet1
+            for data in scraped_results:
+                worksheet.append_row(list(data.values()))
+            return f"Successfully created and updated spreadsheet: <a href='{spreadsheet.url}' target='_blank'>{spreadsheet.title}</a>"
+        else:
+            return "Failed to create spreadsheet. Please make sure your Google Drive credentials are set correctly in the <a href='/settings'>settings page</a>."
 
 
 if __name__ == "__main__":

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Analysis Results{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Analysis Results</h1>
+    <p class="lead">Here is the information we found for your requested programs.</p>
+    <hr class="divider" />
+
+    {% if results %}
+    <div style="display: grid; gap: var(--spacing-md); text-align: left;">
+        {% for program in results %}
+        <div
+            style="background: var(--background-color); padding: var(--spacing-md); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <h2 style="color: var(--primary-color); margin-bottom: var(--spacing-sm);">{{ program['University'] }} - {{
+                program['Program'] }}</h2>
+
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-sm);">
+                <div><strong>Deadline:</strong> {{ program['Application Deadline'] }}</div>
+                <div><strong>Tuition:</strong> {{ program['Tuition'] }}</div>
+                <div><strong>Housing:</strong> {{ program['Housing Cost'] }}</div>
+                <div><strong>GPA:</strong> {{ program['Minimum GPA'] }}</div>
+                <div><strong>GRE:</strong> {{ program['GRE Required'] }}</div>
+            </div>
+
+            <div style="margin-top: var(--spacing-sm);">
+                <strong>Required Coursework:</strong>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">{{ program['Required Coursework'] }}</p>
+            </div>
+
+            <div style="margin-top: var(--spacing-sm);">
+                <strong>Research Areas:</strong>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">{{ program['Faculty/Research Areas'] }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-warning">
+        No data found for the requested universities.
+    </div>
+    {% endif %}
+
+    <div style="margin-top: var(--spacing-lg);">
+        <a href="/" class="btn btn-secondary">Analyze More</a>
+    </div>
+</div>
+{% endblock %}
