@@ -15,6 +15,15 @@
             <h2 style="color: var(--primary-color); margin-bottom: var(--spacing-sm);">{{ program['University'] }} - {{
                 program['Program'] }}</h2>
 
+            {% if program.get('Error') %}
+            <div class="alert alert-danger">
+                <strong>Error:</strong> {{ program['Error'] }}
+                {% if program.get('Source URL') %}
+                <br><small>Source: <a href="{{ program['Source URL'] }}" target="_blank">{{ program['Source URL']
+                        }}</a></small>
+                {% endif %}
+            </div>
+            {% else %}
             <div
                 style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-sm);">
                 <div><strong>Deadline:</strong> {{ program['Application Deadline'] }}</div>
@@ -33,6 +42,12 @@
                 <strong>Research Areas:</strong>
                 <p style="color: var(--text-muted); font-size: 0.9rem;">{{ program['Faculty/Research Areas'] }}</p>
             </div>
+
+            <div style="margin-top: var(--spacing-sm);">
+                <small>Source: <a href="{{ program['Source URL'] }}" target="_blank">{{ program['Source URL']
+                        }}</a></small>
+            </div>
+            {% endif %}
         </div>
         {% endfor %}
     </div>

@@ -18,22 +18,28 @@ def index():
 @app.route("/settings")
 def settings():
     local_path = ""
+    gemini_api_key = ""
     try:
         with open("settings.json", "r") as f:
             settings_data = json.load(f)
             local_path = settings_data.get("local_path", "")
+            gemini_api_key = settings_data.get("gemini_api_key", "")
     except FileNotFoundError:
         pass
-    return render_template("settings.html", local_path=local_path)
+    return render_template("settings.html", local_path=local_path, gemini_api_key=gemini_api_key)
 
 
 @app.route("/save_settings", methods=["POST"])
 def save_settings():
     credentials = request.form.get("credentials", "")
     local_path = request.form.get("local_path", "")
+    gemini_api_key = request.form.get("gemini_api_key", "")
     
     # Save local settings
-    settings_data = {"local_path": local_path}
+    settings_data = {
+        "local_path": local_path,
+        "gemini_api_key": gemini_api_key
+    }
     with open("settings.json", "w") as f:
         json.dump(settings_data, f)
 
@@ -60,9 +66,18 @@ def submit():
         uni.strip() for uni in universities_input.splitlines() if uni.strip()
     ]
 
+    # Load API Key
+    gemini_api_key = ""
+    try:
+        with open("settings.json", "r") as f:
+            settings_data = json.load(f)
+            gemini_api_key = settings_data.get("gemini_api_key", "")
+    except FileNotFoundError:
+        pass
+
     scraped_results = []
     for university in universities_list:
-        data = scrape_program(university)
+        data = scrape_program(university, gemini_api_key)
         if data:
             scraped_results.append(data)
 

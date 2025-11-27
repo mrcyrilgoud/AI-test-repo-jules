@@ -13,6 +13,14 @@
 
     <form action="/save_settings" method="post">
         <div class="form-group">
+            <label for="gemini_api_key" style="font-weight: 600;">Gemini API Key (Required for Research)</label>
+            <input type="password" class="form-control" id="gemini_api_key" name="gemini_api_key"
+                placeholder="Enter your Google AI Studio API Key" value="{{ gemini_api_key }}">
+            <small class="text-muted">Get your key from <a href="https://aistudio.google.com/app/apikey"
+                    target="_blank">Google AI Studio</a>.</small>
+        </div>
+
+        <div class="form-group">
             <label for="local_path" style="font-weight: 600;">Local Spreadsheet Path (Optional)</label>
             <input type="text" class="form-control" id="local_path" name="local_path"
                 placeholder="/path/to/your/spreadsheet.csv" value="{{ local_path }}">
