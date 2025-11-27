@@ -43,7 +43,6 @@ def save_settings():
     # Save local settings
     settings_data = {
         "local_path": local_path,
-        "local_path": local_path,
         # "gemini_api_key": gemini_api_key # No longer saving to settings.json
     }
     with open("settings.json", "w") as f:
