@@ -5,3 +5,4 @@ gspread
 googlesearch-python
 google-generativeai
 markdown
+python-dotenv

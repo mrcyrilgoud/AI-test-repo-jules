@@ -6,6 +6,10 @@ from sheets import get_spreadsheet
 from local_sheets import save_to_csv
 import io
 import csv
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -23,7 +27,8 @@ def settings():
         with open("settings.json", "r") as f:
             settings_data = json.load(f)
             local_path = settings_data.get("local_path", "")
-            gemini_api_key = settings_data.get("gemini_api_key", "")
+            # gemini_api_key = settings_data.get("gemini_api_key", "")
+            gemini_api_key = os.getenv("GEMINI_API_KEY", "")
     except FileNotFoundError:
         pass
     return render_template("settings.html", local_path=local_path, gemini_api_key=gemini_api_key)
@@ -38,7 +43,8 @@ def save_settings():
     # Save local settings
     settings_data = {
         "local_path": local_path,
-        "gemini_api_key": gemini_api_key
+        "local_path": local_path,
+        # "gemini_api_key": gemini_api_key # No longer saving to settings.json
     }
     with open("settings.json", "w") as f:
         json.dump(settings_data, f)
@@ -71,7 +77,8 @@ def submit():
     try:
         with open("settings.json", "r") as f:
             settings_data = json.load(f)
-            gemini_api_key = settings_data.get("gemini_api_key", "")
+            # gemini_api_key = settings_data.get("gemini_api_key", "")
+            gemini_api_key = os.getenv("GEMINI_API_KEY", "")
     except FileNotFoundError:
         pass
 
