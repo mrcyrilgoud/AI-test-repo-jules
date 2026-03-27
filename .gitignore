@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+.env
+.DS_Store
+settings.json
+credentials.json
+grad_school_tool/__pycache__/
+grad_school_tool/.env
+grad_school_tool/settings.json
+grad_school_tool/credentials.json

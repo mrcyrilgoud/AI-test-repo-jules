@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Settings</h1>
+    <p class="lead">Configure your Google Drive connection (Optional).</p>
+
+    <div class="alert alert-warning" role="alert">
+        <strong>Note:</strong> You only need to provide credentials if you want to <strong>save results to a Google
+            Sheet</strong>. You can use the "Visualize Only" mode without any setup.
+    </div>
+
+    <form action="/save_settings" method="post">
+        <div class="form-group">
+            <label for="gemini_api_key" style="font-weight: 600;">Gemini API Key (Required for Research)</label>
+            <input type="password" class="form-control" id="gemini_api_key" name="gemini_api_key"
+                placeholder="Enter your Google AI Studio API Key" value="{{ gemini_api_key }}">
+            <small class="text-muted">Get your key from <a href="https://aistudio.google.com/app/apikey"
+                    target="_blank">Google AI Studio</a>.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="local_path" style="font-weight: 600;">Local Spreadsheet Path (Optional)</label>
+            <input type="text" class="form-control" id="local_path" name="local_path"
+                placeholder="/path/to/your/spreadsheet.csv" value="{{ local_path }}">
+            <small class="text-muted">Enter an absolute path to a CSV file to save results locally.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="credentials" style="font-weight: 600;">Google Drive Credentials (Optional)</label>
+            <textarea class="form-control" id="credentials" name="credentials" rows="10"
+                placeholder="Paste your credentials.json content here"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Settings</button>
+    </form>
+
+    <div style="margin-top: var(--spacing-md);">
+        <a href="/">Back to Home</a>
+    </div>
+</div>
+{% endblock %}
